@@ -62,6 +62,9 @@ public enum ExceptionCodeEnums {
 
     LOGOUT_SUCCESS(35 , "登出成功"),
 
+    ACTIVITY_END(36, "活动结束"),
+
+    GET_LOCK_FAIL(37, "哎呦喂，人也太多了，换个姿势再试试！"),
     ;
 
     private Integer code;
