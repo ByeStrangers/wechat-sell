@@ -8,5 +8,10 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+  freemarker:
+    charset: utf-8
+    suffix: .ftl
+    content-type: text/html; charset=utf-8
+    template-loader-path: classpath:/templates
 server:
   context-path: /sell
