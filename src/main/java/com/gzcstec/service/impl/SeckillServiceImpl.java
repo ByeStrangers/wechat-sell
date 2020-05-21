@@ -11,6 +11,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @CalssName: SeckillServiceImpl
@@ -55,7 +59,7 @@ public class SeckillServiceImpl implements SeckillService {
     }
 
     @Override
-    public void orderProductMockDiffUser(String productId) {
+    public String orderProductMockDiffUser(String productId) {
         //加锁
         long time = System.currentTimeMillis() + TIMEOUT;
         if(!redisLockService.lock(productId, String.valueOf(time))){
@@ -69,20 +73,47 @@ public class SeckillServiceImpl implements SeckillService {
         }
 
         //2、下单（模拟不同用户openId不同）
-        orders.put(KeyUtils.gen(), productId);
+        String openId = KeyUtils.gen();
+        if(orders.containsKey(openId)){
+            throw new SellException(ExceptionCodeEnums.HAS_ORDER);
+        }
+        orders.put(openId, productId);
 
         //3、减库存
         stockNum -= 1;
 
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
+        //4、设置库存
         stock.put(productId, stockNum);
 
         //解锁
         redisLockService.unlock(productId, String.valueOf(time));
+        return openId;
+    }
+
+    @Override
+    public String seckillTest(Integer threadNum) {
+        //每次执行秒杀初始化
+        stock.put("123456", 100000);
+        orders = new HashMap<>();
+        threadNum = threadNum == null ? 500 : threadNum;//创建指定线程进行测试
+        CountDownLatch countDownLatch = new CountDownLatch(threadNum);
+        try{
+            //1、创建一个缓存线程池
+            ExecutorService executorService =  Executors.newCachedThreadPool();
+            for(int i = 0; i < threadNum; i++){
+                //执行线程
+                executorService.execute(() -> {
+                    countDownLatch.countDown();
+                    String userId = orderProductMockDiffUser("123456");//秒杀
+//                    System.out.println(userId + "秒杀完毕");
+                });
+            }
+            countDownLatch.await();
+            //当所有线程执行完毕，执行下面，使用countDownLatch类，具体参考https://www.jianshu.com/p/e233bb37d2e6，此处采用线程池方式
+            return querySeckillProductInfo("123456");
+        }catch (Exception e){
+            e.printStackTrace();
+            return e.getMessage();
+        }
     }
 }

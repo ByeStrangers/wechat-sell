@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title></title>
+</head>
+<body>
+    <div>
+        <canvas id="myCanvas" height="600px" width="1200px" style="border:1px solid;padding:5px;"></canvas>
+    </div>
+</body>
+</html>
+<script>
+    var mycanvas = document.getElementById('myCanvas');
+           var ctx = mycanvas.getContext("2d");
+           //流程块
+            function Can(ctx,Bolds,BorderColor,DistanceX,DistanceY,Widths,Hights,Bcolor,FontColor,FontS,Texts,textX,textY){
+                     //边框背景
+                ctx.beginPath();
+                ctx.lineWidth=Bolds;
+                ctx.strokeStyle=BorderColor;//边框颜色
+                ctx.rect(DistanceX,DistanceY,Widths,Hights);
+                ctx.fillStyle=Bcolor;//背景颜色
+                ctx.fill();
+                ctx.fillStyle=FontColor;//字体颜色
+                ctx.font = FontS;
+                ctx.fillText(Texts, textX, textY);
+                ctx.stroke();
+                ctx.closePath();
+           };
+           //字体
+           function Fon(FontS,Texts,textX,textY,color){
+                ctx.beginPath();
+                ctx.font = FontS;
+                ctx.fillStyle=color;
+                ctx.fillText(Texts, textX, textY);
+                ctx.stroke();
+                ctx.closePath();
+           }
+           //箭头
+            function drawArrow(ctx,fromX,fromY,toX,toY,theta,headlen,width,color) {
+           theta = typeof(theta) != 'undefined' ? theta : 30;
+           headlen = typeof(theta) != 'undefined' ? headlen : 10;
+           width = typeof(width) != 'undefined' ? width : 1;
+           color = typeof(color) != 'color' ? color : '#000'; // 计算各角度和对应的P2,P3坐标
+            var angle = Math.atan2(fromY - toY, fromX - toX) * 180 / Math.PI, //求角度，此处计算两个点成线的角度负值，这样可以画箭头，因为箭头是form -> to 线条的反方向
+                angle1 = (angle + theta) * Math.PI / 180, //再线条角度基础上 + 某个值
+                angle2 = (angle - theta) * Math.PI / 180, //再线条角度基础上 - 某个值, 形成箭头
+                topX = headlen * Math.cos(angle1), //计算箭头线条的x坐标，cos = 临边 / 斜边（1）
+                topY = headlen * Math.sin(angle1), //计算箭头线条的y坐标，cos = 对边 / 斜边（1）
+                botX = headlen * Math.cos(angle2),
+                botY = headlen * Math.sin(angle2);
+                ctx.save();
+                ctx.beginPath();
+                var arrowX = 0;
+                var arrowY = 0;
+                ctx.moveTo(fromX, fromY);
+                ctx.lineTo(toX, toY); //画原线条
+                arrowX = toX + topX;
+                arrowY = toY + topY; //以终点为原点，画箭头的上下部分
+                ctx.moveTo(arrowX, arrowY);
+                ctx.lineTo(toX, toY);
+                arrowX = toX + botX;
+                arrowY = toY + botY;
+                ctx.lineTo(arrowX, arrowY);
+                ctx.strokeStyle = color;
+                ctx.lineWidth = width;
+                ctx.stroke();
+                ctx.restore();
+            };
+            Can(ctx,1,"#ccc",10,10,120,50,"#000","#fff","12pt Arial","流程1",40,40);
+            Can(ctx,1,"#ccc",280,10,120,50,"#000","#fff","12pt Arial","流程2",316,40);
+            Can(ctx,1,"#ccc",550,10,120,50,"#000","#fff","12pt Arial","流程3",570,40);
+            Can(ctx,1,"#ccc",820,10,120,50,"#000","#fff","12pt Arial","流程4",855,40);
+            Can(ctx,1,"#ccc",1090,10,120,50,"#000","#fff","12pt Arial","流程5",1104,40);
+            Can(ctx,1,"#ccc",1090,200,120,50,"#000","#fff","12pt Arial","流程6",1104,232);
+            Can(ctx,1,"#ccc",1090,380,120,50,"#ccc","#fff","12pt Arial","流程7",1104,410);
+            Can(ctx,1,"#ccc",820,380,120,50,"#ccc","#fff","12pt Arial","流程8",840,410);
+            Can(ctx,1,"#ccc",550,380,120,50,"#ccc","#fff","12pt Arial","流程9",570,410);
+            Can(ctx,1,"#ccc",280,380,120,50,"#ccc","#fff","12pt Arial","流程10",316,410);
+            Can(ctx,1,"#ccc",10,380,120,50,"#ccc","#fff","12pt Arial","流程11",40,410);
+            Can(ctx,1,"#ccc",550,200,120,50,"#ccc","#fff","12pt Arial","流程12",586,232);
+ 
+                //canvas环境,线X轴起点,线Y轴起点,旋转角度x,y,尖角,尖角,颜色
+              drawArrow(ctx,130,30,170,30,0,0,1,'green'); //箭头线条前一半
+			  Fon("12pt Arial","李大钊4",180,30,"green"); //字体，得计算单个字体宽度来计算总字体长度
+			  drawArrow(ctx,240,30,280,30,30,10,2,'green'); //箭头线条后一半
+			  
+			  
+              drawArrow(ctx,130,42,170,42,0,0,1,'blue');
+              Fon("12pt Arial","陈独秀",180,60,'red');
+              drawArrow(ctx,240,42,280,42,30,10,1,'blue');
+             
+             
+			  
+</script>

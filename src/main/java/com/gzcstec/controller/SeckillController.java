@@ -43,4 +43,15 @@ public class SeckillController {
         seckillService.orderProductMockDiffUser(productId);
         return seckillService.querySeckillProductInfo(productId);
     }
+
+    /**
+     *
+     * @param threadNum 商品ID
+     * @return 商品信息
+     * @throws Exception
+     */
+    @GetMapping("seckillTest/{threadNum}")
+    public String skill(@PathVariable(value = "threadNum") Integer threadNum) throws Exception{
+        return seckillService.seckillTest(threadNum);
+    }
 }

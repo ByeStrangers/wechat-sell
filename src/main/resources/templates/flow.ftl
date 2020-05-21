@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <title>渲染流程图</title>
@@ -8,7 +8,11 @@
     <script type="text/javascript" src="js/flow.js"></script>
 </head>
 <body>
-<h1>${title}</h1>
-
+    <div class="contentWrap">
+        <div class="titleWrap">${title}</div>
+        <div class="flowWrap">
+            <canvas id="flow"></canvas>
+        </div>
+    </div>
 </body>
 </html>

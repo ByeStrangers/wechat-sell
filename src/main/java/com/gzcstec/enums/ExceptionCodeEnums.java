@@ -65,6 +65,8 @@ public enum ExceptionCodeEnums {
     ACTIVITY_END(36, "活动结束"),
 
     GET_LOCK_FAIL(37, "哎呦喂，人也太多了，换个姿势再试试！"),
+
+    HAS_ORDER(38, "哎呦喂，您已经有下单过，别这么豪横！"),
     ;
 
     private Integer code;

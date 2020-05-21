@@ -13,5 +13,13 @@ spring:
     suffix: .ftl
     content-type: text/html; charset=utf-8
     template-loader-path: classpath:/templates
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+  http:
+      encoding:
+        charset: utf-8
+        force: true
+        enabled: true
 server:
   context-path: /sell

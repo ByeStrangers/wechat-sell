@@ -12,5 +12,8 @@ public interface SeckillService {
     String querySeckillProductInfo(String productId);
 
     //商品秒杀
-    void orderProductMockDiffUser(String productId);
+    String orderProductMockDiffUser(String productId);
+
+    //秒杀测试，模拟并发
+    String seckillTest(Integer threadNum);
 }
