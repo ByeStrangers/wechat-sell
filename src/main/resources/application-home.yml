@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    username: root
+    username: frank
     password: 123456
-    url: jdbc:mysql://192.168.31.30/dbsell?characterEncoding=utf-8&userSSL=false
+    url: jdbc:mysql://127.0.0.1/sell?useUnicode=true&characterEncoding=utf8&useSSL=false
   jpa:
     show-sql: true
     hibernate:
@@ -22,4 +22,8 @@ spring:
         force: true
         enabled: true
 server:
+  port: 8080
   context-path: /sell
+
+debug: true
+
