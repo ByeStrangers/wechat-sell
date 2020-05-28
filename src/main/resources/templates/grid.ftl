@@ -2,10 +2,23 @@
 <html lang="zh_CN" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <title>渲染流程图</title>
+    <title>网格线</title>
     <link href="css/flow.css" rel="stylesheet"  type="text/css"/>
     <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="js/flow.js"></script>
+    <script type="text/javascript" src="js/grid.js"></script>
+    <style>
+        body{
+            background-color:#eee;
+        }
+        #grid{
+            background-color:#fff;
+            margin-left:10px;
+            margin-top:10px;
+            -webkit-box-shadow:4px 4px 8px rgba(0,0,0,0.5);
+            -moz-box-shadow:4px 4px 8px rgba(0,0,0,0.5);
+            -box-shadow:4px 4px 8px rgba(0,0,0,0.5);
+        }
+    </style>
 </head>
 <body>
     <div class="contentWrap">
@@ -33,22 +46,22 @@
                     </div>
                     <div style="border: 1px solid red;width:100%;height: 30px;display: flex;align-items: center;">
                         <span>网关节点是：</span>
-                        <input id="nodeName1" value="XX审核" placeholder="请输入节点名称"/>
+                        <input id="nodeName1" value="1234" placeholder="请输入节点名称"/>
                     </div>
                     <div style="border: 1px solid red;width:100%;height: 30px;display: flex;align-items: center;">
                         <span>网关节点否：</span>
-                        <input id="nodeName2" value="XXX审核" placeholder="请输入节点名称"/>
+                        <input id="nodeName2" value="5678" placeholder="请输入节点名称"/>
                     </div>
                 </div>
                 <!--按钮-->
                 <div style="border: 1px solid red;height: 30px;display: flex;align-items: center;justify-content: flex-end;padding: 0 15px;">
-                    <button onclick="canvasFlowObj.renderFlowForJson();canvasFlowObj.renderFlowEnd();">流程渲染</button>&nbsp;
+                    <button onclick="canvasFlowObj.renderFlowForJson();">流程渲染</button>&nbsp;
                     <button onclick="canvasFlowObj.addNode();">添加节点</button>
                 </div>
             </div>
             <!--流程图-->
-            <div style="border: 1px solid red;width:966px;height: 492px;overflow: auto;">
-                <canvas id="flow" height="484" width="962"></canvas>
+            <div style="border: 1px solid red;width:990px;height: 510px;overflow: auto;">
+                <canvas id="grid" height="484" width="962"></canvas>
             </div>
         </div>
     </div>

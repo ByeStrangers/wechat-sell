@@ -28,8 +28,6 @@
     justify-content: center;
 }
 
-.flowWrap > canvas{
+.flowWrap  canvas{
     border: 1px solid red;
-    width: 50%;
-    height: 50%;
 }

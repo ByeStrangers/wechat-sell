@@ -24,4 +24,10 @@ public class SellApplication {
 		model.addAttribute("title", "流程图渲染案例");
 		return "flow";
 	}
+
+	@RequestMapping("grid")
+	public String getGrid(Model model){
+		model.addAttribute("title", "网格渲染案例");
+		return "grid";
+	}
 }

@@ -60,33 +60,38 @@ public class SeckillServiceImpl implements SeckillService {
 
     @Override
     public String orderProductMockDiffUser(String productId) {
+        String openId = "";
         //加锁
         long time = System.currentTimeMillis() + TIMEOUT;
-        if(!redisLockService.lock(productId, String.valueOf(time))){
-            throw new SellException(ExceptionCodeEnums.GET_LOCK_FAIL);
+        try{
+
+            if(!redisLockService.lock(productId, String.valueOf(time))){
+                throw new SellException(ExceptionCodeEnums.GET_LOCK_FAIL);
+            }
+
+            //1、查询该商品库存，为0则活动结束
+            int  stockNum = stock.get(productId);
+            if(stockNum == 0){
+                throw new SellException(ExceptionCodeEnums.ACTIVITY_END);
+            }
+
+            //2、下单（模拟不同用户openId不同）
+            openId = KeyUtils.gen();
+            if(orders.containsKey(openId)){
+                throw new SellException(ExceptionCodeEnums.HAS_ORDER);
+            }
+            orders.put(openId, productId);
+
+            //3、减库存
+            stockNum -= 1;
+
+            //4、设置库存
+            stock.put(productId, stockNum);
+        }catch (Exception e){
+        }finally {
+            //解锁
+            redisLockService.unlock(productId, String.valueOf(time));
         }
-
-        //1、查询该商品库存，为0则活动结束
-        int  stockNum = stock.get(productId);
-        if(stockNum == 0){
-            throw new SellException(ExceptionCodeEnums.ACTIVITY_END);
-        }
-
-        //2、下单（模拟不同用户openId不同）
-        String openId = KeyUtils.gen();
-        if(orders.containsKey(openId)){
-            throw new SellException(ExceptionCodeEnums.HAS_ORDER);
-        }
-        orders.put(openId, productId);
-
-        //3、减库存
-        stockNum -= 1;
-
-        //4、设置库存
-        stock.put(productId, stockNum);
-
-        //解锁
-        redisLockService.unlock(productId, String.valueOf(time));
         return openId;
     }
 
